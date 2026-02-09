@@ -195,6 +195,26 @@ port_close(int port)
     // if it is open, we empty its contents and mark it as free.
 
     // YOUR CODE HERE
+    
+    //check for invalid port, either below zero or outside of array
+    if (port < 0 || port >= NPORT)
+    return;  
+
+
+    //port is not free and therefore is open
+    if (ports[port].free == 0) {
+
+        //set indexes to 'start' to empty buffer
+        ports[port].head = 0;
+        ports[port].tail = 0;
+        ports[port].count = 0;
+
+        //the port is now made free with no owner
+        ports[port].free = 1;
+        ports[port].owner = -1;
+
+
+    }
 }
 
 
