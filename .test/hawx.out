@@ -1,0 +1,2 @@
+riscv64-linux-gnu-gcc -Wall -O -fno-omit-frame-pointer -ggdb -MD -mcmodel=medany -ffreestanding -fno-common -nostdlib -mno-relax -I. -fno-stack-protector -fno-pie -no-pie   -c -o kernel/port.o kernel/port.c
+riscv64-linux-gnu-ld -z max-page-size=4096 -T kernel/kernel.ld -o kernel/kernel kernel/entry.o kernel/start.o kernel/printf.o kernel/string.o kernel/kernelvec.o kernel/trampoline.o kernel/swtch.o kernel/port.o kernel/plic.o kernel/tests.o kernel/main.o kernel/libprecompiled.a

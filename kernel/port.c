@@ -309,7 +309,7 @@ port_write(int port, char *buf, int n)
     
     //bytes to be written decided by n or space left, whichever is smaller, to ensure we do not try to write more
     //than the buffer can contain
-    int bytesToWrite = min(n, availableSpace);
+    int bytesToWrite = (n < availableSpace) ? n : availableSpace;
 
     for (int i = 0; i < bytesToWrite; i++) {
 
@@ -348,7 +348,7 @@ port_read(int port, char *buf, int n)
     
     //bytes to be written decided by n or space left, whichever is smaller, to ensure we do not try to write more
     //than the buffer can contain
-    int bytesToRead = min(n, ports[port].count);
+    int bytesToRead  = (n < count) ? n : count;
 
     for (int i = 0; i < bytesToRead; i++) {
 
