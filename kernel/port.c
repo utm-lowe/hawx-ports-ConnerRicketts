@@ -233,7 +233,53 @@ port_acquire(int port, procid_t proc_id)
 
     // YOUR CODE HERE
     
-    return -1;
+
+    //port is -1, allocate next free port
+    if (port == -1) {
+
+       for (int i = 0; i < NPORT; i++) {
+           
+           if (ports[i].free == 1) {
+             
+            //its free, proceed with allocation
+             ports[i].free = 0;    
+             ports[i].owner = proc_id;
+
+             return i;
+       
+           }
+           
+           
+
+       }
+       
+       //operation failed, no free port
+           
+        return -1;
+
+    }
+    
+    else {
+       
+        //invalid, return -1
+       if ((port < 0 || port >= NPORT) || (ports[port].free == 0)) {
+
+           return -1;
+
+       }
+         
+       else {
+          
+          //allocate
+          ports[port].free = 0;    
+          ports[port].owner = proc_id;
+
+          return port;
+
+       }
+
+    }
+    
 }
 
 
