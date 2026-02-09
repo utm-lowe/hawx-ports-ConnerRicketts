@@ -157,6 +157,33 @@ port_init(void)
     // non-kernal ports. Make sure that all ports are empty.
 
     // YOUR CODE HERE
+
+    for (int i = 0; i < NPORT; i++) {
+         
+        //if it is a predefined port, not free, owned by kernel
+         if (i < 3) {
+            
+            ports[i].free = 0;
+            ports[i].owner = 0;
+            ports[i].type = PORT_TYPE_KERNEL;
+           
+
+         }
+
+         else {
+            
+            //all other ports are free
+            ports[i].free = 1;
+            ports[i].owner = -1;
+            ports[i].type = PORT_TYPE_FREE;
+
+         }
+
+           ports[i].head = 0;
+           ports[i].tail = 0;
+           ports[i].count = 0;
+
+    }
 }
 
 
