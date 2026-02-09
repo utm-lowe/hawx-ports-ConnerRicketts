@@ -294,7 +294,34 @@ port_write(int port, char *buf, int n)
     // write it.
 
     // YOUR CODE HERE
-    return -1;
+
+    //invalid or port is closed
+    if ((port < 0 || port >= NPORT) || (ports[port].free == 1)) {
+
+       return -1;
+
+    }
+    
+    int count = ports[port].count;
+
+    //space left to write on the buffer
+    int availableSpace = PORT_BUF_SIZE - count;
+    
+    //bytes to be written decided by n or space left, whichever is smaller, to ensure we do not try to write more
+    //than the buffer can contain
+    int bytesToWrite = min(n, availableSpace);
+
+    for (int i = 0; i < bytesToWrite; i++) {
+
+        ports[port].buffer[ports[port].head] = buf[i];
+        ports[port].head = (ports[port].head + 1) % PORT_BUF_SIZE;
+        ports[port].count++;
+ 
+
+    }
+
+     return bytesToWrite;
+
 }
 
 
@@ -310,5 +337,27 @@ port_read(int port, char *buf, int n)
 
     // YOUR CODE HERE
 
-    return -1;
+    //invalid or port is closed
+    if ((port < 0 || port >= NPORT) || (ports[port].free == 1)) {
+
+       return -1;
+
+    }
+    
+    int count = ports[port].count;
+    
+    //bytes to be written decided by n or space left, whichever is smaller, to ensure we do not try to write more
+    //than the buffer can contain
+    int bytesToRead = min(n, ports[port].count);
+
+    for (int i = 0; i < bytesToRead; i++) {
+
+        buf[i] = ports[port].buffer[ports[port].tail];
+        ports[port].tail = (ports[port].tail + 1) % PORT_BUF_SIZE;
+        ports[port].count--;
+ 
+
+    }
+
+     return bytesToRead;
 }
