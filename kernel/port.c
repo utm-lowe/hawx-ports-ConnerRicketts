@@ -211,8 +211,8 @@ port_close(int port)
 
         //the port is now made free with no owner
         ports[port].free = 1;
-        ports[port].owner = -1;
-        ports[port].type = PORT_TYPE_FREE;
+        ports[port].owner = 0;
+        
 
 
 
@@ -264,7 +264,7 @@ port_acquire(int port, procid_t proc_id)
     else {
        
         //invalid, return -1
-       if ((port < 0 || port >= NPORT) || (ports[port].free == 0)) {
+       if ((port < 0 || port >= NPORT) || (ports[port].free == 0) || (ports[port].type == PORT_TYPE_KERNEL)) {
 
            return -1;
 
