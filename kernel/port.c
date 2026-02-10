@@ -201,8 +201,8 @@ port_close(int port)
     return;  
 
 
-    //port is not free and therefore is open
-    if (ports[port].free == 0) {
+    //port is not free and therefore is open, do not touch kernel ports
+    if ((ports[port].free == 0) && (ports[port].type != PORT_TYPE_KERNEL)) {
 
         //set indexes to 'start' to empty buffer
         ports[port].head = 0;
@@ -234,14 +234,14 @@ port_acquire(int port, procid_t proc_id)
     // YOUR CODE HERE
     
 
-    //port is -1, allocate next free port
+    //chosen port is -1, allocate next free port instead
     if (port == -1) {
 
        for (int i = 0; i < NPORT; i++) {
            
            if ((ports[i].free == 1) && (ports[i].type != PORT_TYPE_KERNEL)) {
              
-            //its free, proceed with allocation
+            //its free and not a kernel port, proceed with allocation
              ports[i].free = 0;    
              ports[i].owner = proc_id;
 
@@ -270,7 +270,7 @@ port_acquire(int port, procid_t proc_id)
          
        else {
           
-          //allocate
+          //allocate the desired port
           ports[port].free = 0;    
           ports[port].owner = proc_id;
 
