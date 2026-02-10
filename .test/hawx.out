@@ -1,2 +1,13 @@
 riscv64-linux-gnu-gcc -Wall -O -fno-omit-frame-pointer -ggdb -MD -mcmodel=medany -ffreestanding -fno-common -nostdlib -mno-relax -I. -fno-stack-protector -fno-pie -no-pie   -c -o kernel/port.o kernel/port.c
 riscv64-linux-gnu-ld -z max-page-size=4096 -T kernel/kernel.ld -o kernel/kernel kernel/entry.o kernel/start.o kernel/printf.o kernel/string.o kernel/kernelvec.o kernel/trampoline.o kernel/swtch.o kernel/port.o kernel/plic.o kernel/tests.o kernel/main.o kernel/libprecompiled.a
+riscv64-linux-gnu-objdump -S kernel/kernel > kernel/kernel.asm
+riscv64-linux-gnu-objdump -t kernel/kernel | sed '1,/SYMBOL TABLE/d; s/ .* / /; /^$/d' > kernel/kernel.sym
+qemu-system-riscv64 -machine virt -bios none -kernel kernel/kernel -m 128M -smp 1 -nographic -global virtio-mmio.force-legacy=false
+
+HAWX kernel is booting
+
+port init test...PASSED
+port write test...PASSED
+port read test...PASSED
+port acquire/close test...FAILED
+panic: All done! (for now...)

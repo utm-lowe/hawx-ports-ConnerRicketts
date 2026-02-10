@@ -239,7 +239,7 @@ port_acquire(int port, procid_t proc_id)
 
        for (int i = 0; i < NPORT; i++) {
            
-           if (ports[i].free == 1) {
+           if ((ports[i].free == 1) && (ports[i].type != PORT_TYPE_KERNEL)) {
              
             //its free, proceed with allocation
              ports[i].free = 0;    
