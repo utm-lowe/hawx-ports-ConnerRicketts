@@ -212,6 +212,8 @@ port_close(int port)
         //the port is now made free with no owner
         ports[port].free = 1;
         ports[port].owner = -1;
+        ports[port].type = PORT_TYPE_FREE;
+
 
 
     }
